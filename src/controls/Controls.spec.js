@@ -12,13 +12,17 @@ describe("<Controls />", () => {
     const control = renderer.create(<Controls />).toJSON();
     expect(control).toMatchSnapshot();
   });
+});
 
-  it("should have a close gate and lock gate button", () => {
+describe("initial state of controls", () => {
+  it("should have a close gate and lock gate button to start", () => {
     const { getByText } = render(<Controls />);
     getByText(/close gate/i);
     getByText(/lock gate/i);
   });
+});
 
+describe("toggle text for contorl buttons", () => {
   it("should toggle text of close to open", () => {
     const { getByText } = render(<Dashboard />);
     const button = getByText(/close gate/i);
@@ -26,7 +30,6 @@ describe("<Controls />", () => {
     getByText(/open gate/i);
   });
 
-  // open gate to close gate
   it("should toggle text of open gate to close gate", () => {
     const { getByText } = render(<Dashboard />);
     const closeSwitch = getByText(/close gate/i);
@@ -37,6 +40,29 @@ describe("<Controls />", () => {
     getByText(/close gate/i);
   });
 
+  it("should toggle text of lock gate to unlock gate", () => {
+    const { getByText } = render(<Dashboard />);
+    const closeSwitch = getByText(/close gate/i);
+    fireEvent.click(closeSwitch);
+
+    const lockSwitch = getByText(/lock gate/i);
+    fireEvent.click(lockSwitch);
+    getByText(/unlock gate/i);
+  });
+
+  it("should toggle text of unlock gate to lock gate", () => {
+    const { getByText } = render(<Dashboard />);
+    const closeSwitch = getByText(/close gate/i);
+    fireEvent.click(closeSwitch);
+
+    const lockSwitch = getByText(/lock gate/i);
+    fireEvent.click(lockSwitch);
+    fireEvent.click(getByText(/unlock gate/i));
+    getByText(/lock gate/i);
+  });
+});
+
+describe("disabled control button", () => {
   it("lock gate should be disabled when gate is unlocked", () => {
     const { getByText } = render(<Dashboard />);
     const button = getByText(/lock gate/i);

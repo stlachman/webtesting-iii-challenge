@@ -1,10 +1,18 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
+import renderer from "react-test-renderer";
 import "jest-dom/extend-expect";
 import "@testing-library/react/cleanup-after-each";
 
 import Dashboard from "../dashboard/Dashboard";
 import Display from "./Display";
+
+describe("create a snapshot of display component", () => {
+  it("matches snapshot", () => {
+    const control = renderer.create(<Display />).toJSON();
+    expect(control).toMatchSnapshot();
+  });
+});
 
 describe("<Display />", () => {
   it("should display gate open and unlocked initially", () => {
@@ -12,7 +20,10 @@ describe("<Display />", () => {
     getByText(/unlocked/i);
     getByText(/open/i);
   });
+});
 
+// Display status messages based on clicks
+describe("display status messages", () => {
   it("should display gate unlocked and closed after clicking close gate", () => {
     const { getByText } = render(<Dashboard />);
     let button = getByText(/close gate/i);
@@ -43,7 +54,10 @@ describe("<Display />", () => {
     getByText(/unlocked/i);
     getByText(/closed/i);
   });
+});
 
+// Display text changes based on props
+describe("display text changes based on closed and locked props", () => {
   it("should display closed if closed prop is true", () => {
     const { getByText } = render(<Display closed={true} locked={false} />);
     getByText(/closed/i);
@@ -63,7 +77,9 @@ describe("<Display />", () => {
     const { getByText } = render(<Display closed={true} locked={false} />);
     getByText(/unlocked/i);
   });
+});
 
+describe("class names based on closed and locked props", () => {
   it("should have red-led class if closed prop is true", () => {
     const { getByText } = render(<Display closed={true} locked={false} />);
     const closed = getByText(/closed/i);
