@@ -37,13 +37,13 @@ describe("<Controls />", () => {
     getByText(/close gate/i);
   });
 
-  it("should have disabled property on lock gate when gate is unlocked", () => {
+  it("lock gate should be disabled when gate is unlocked", () => {
     const { getByText } = render(<Dashboard />);
     const button = getByText(/lock gate/i);
     expect(button).toBeDisabled();
   });
 
-  it("should have disabled property on open gate when gate is locked", () => {
+  it("open gate should be disabled when gate is locked", () => {
     const { getByText } = render(<Dashboard />);
     let openControl = getByText(/close gate/i);
     fireEvent.click(openControl);
