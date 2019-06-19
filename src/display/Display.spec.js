@@ -1,5 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
+import "jest-dom/extend-expect";
 import "@testing-library/react/cleanup-after-each";
 
 import Dashboard from "../dashboard/Dashboard";
@@ -41,5 +42,25 @@ describe("<Display />", () => {
 
     getByText(/unlocked/i);
     getByText(/closed/i);
+  });
+
+  it("should display closed if closed prop is true", () => {
+    const { getByText } = render(<Display closed={true} locked={false} />);
+    getByText(/closed/i);
+  });
+
+  it("should display open if closed prop is false", () => {
+    const { getByText } = render(<Display closed={false} locked={false} />);
+    getByText(/open/i);
+  });
+
+  it("should display locked if locked prop is true", () => {
+    const { getByText } = render(<Display closed={true} locked={true} />);
+    getByText(/locked/i);
+  });
+
+  it("should display unlocked if locked prop is false", () => {
+    const { getByText } = render(<Display closed={true} locked={false} />);
+    getByText(/unlocked/i);
   });
 });
